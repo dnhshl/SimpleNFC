@@ -10,6 +10,7 @@ import android.util.Log
 import org.ndeftools.Message
 import org.ndeftools.Record
 import org.ndeftools.wellknown.TextRecord
+import org.ndeftools.wellknown.UriRecord
 import splitties.alertdialog.alertDialog
 import splitties.alertdialog.cancelButton
 import splitties.alertdialog.positiveButton
@@ -62,6 +63,9 @@ class MainActivity : AppCompatActivity() {
                         if(record is TextRecord){
                             val textRecord = record as TextRecord
                             Log.i(TAG, "TextRecord is ${textRecord.text}")
+                        }else if(record is UriRecord){
+                            val uri = record as UriRecord
+                            Log.i(TAG, "UriRecord is ${uri.uri}")
                         }
                     }
                 } catch (e: Exception) {
