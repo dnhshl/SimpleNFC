@@ -1,6 +1,7 @@
 package com.example.simplenfc
 
 import android.content.Intent
+import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -43,6 +44,18 @@ class MainActivity : AppCompatActivity() {
         }
         toast(getString(R.string.nfc_received, intent.action))
 
+        val rawMessage = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+        if(rawMessage != null && rawMessage.size > 0) {
+            val messages = arrayOfNulls<NdefMessage>(rawMessage.size)
+            for(i in 0 until rawMessage.size) {
+                messages[i] = rawMessage[i] as NdefMessage
+                for(record in messages[i]!!.records){
+                    val payloadData = String(record.payload)
+                    Log.i(TAG, "handleNfcIntent: $payloadData")
+                    toast("payload: $payloadData")
+                }
+            }
+        }
     }
 
     override fun onResume() {
