@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import org.ndeftools.Message
 import org.ndeftools.Record
+import org.ndeftools.externaltype.AndroidApplicationRecord
 import org.ndeftools.wellknown.TextRecord
 import org.ndeftools.wellknown.UriRecord
 import splitties.alertdialog.alertDialog
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity() {
                         }else if(record is UriRecord){
                             val uri = record as UriRecord
                             Log.i(TAG, "UriRecord is ${uri.uri}")
+                        }else if (record is AndroidApplicationRecord) {
+                            val aar = record as AndroidApplicationRecord
+                            Log.i(TAG, "Package is ${aar.packageName}")
                         }
                     }
                 } catch (e: Exception) {
