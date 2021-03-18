@@ -5,6 +5,7 @@ import android.nfc.NfcAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import splitties.alertdialog.alertDialog
 import splitties.alertdialog.cancelButton
 import splitties.alertdialog.positiveButton
@@ -24,6 +25,24 @@ class MainActivity : AppCompatActivity() {
             toast(R.string.nfc_not_available)
             finish()
         }
+
+        val intent = intent
+        Log.d(TAG, "onCreate: ${intent.action}")
+        handleNfcNdefIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        Log.d(TAG, "onNewIntent : ${intent!!.action}")
+        handleNfcNdefIntent(intent)
+        super.onNewIntent(intent)
+    }
+
+    private fun handleNfcNdefIntent(intent: Intent) {
+        if(!intent.hasExtra(NfcAdapter.EXTRA_TAG)){
+            return
+        }
+        toast(getString(R.string.nfc_received, intent.action))
+
     }
 
     override fun onResume() {
