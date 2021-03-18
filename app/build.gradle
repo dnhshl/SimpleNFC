@@ -44,4 +44,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation("com.louiscad.splitties:splitties-toast:3.0.0-beta01")
     implementation("com.louiscad.splitties:splitties-alertdialog:3.0.0-beta01")
+    implementation 'com.google.code.ndef-tools-for-android:ndeftools:1.2.4'
 }

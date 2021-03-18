@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import org.ndeftools.Message
+import org.ndeftools.Record
+import org.ndeftools.wellknown.TextRecord
 import splitties.alertdialog.alertDialog
 import splitties.alertdialog.cancelButton
 import splitties.alertdialog.positiveButton
@@ -48,11 +51,21 @@ class MainActivity : AppCompatActivity() {
         if(rawMessage != null && rawMessage.size > 0) {
             val messages = arrayOfNulls<NdefMessage>(rawMessage.size)
             for(i in 0 until rawMessage.size) {
-                messages[i] = rawMessage[i] as NdefMessage
-                for(record in messages[i]!!.records){
-                    val payloadData = String(record.payload)
-                    Log.i(TAG, "handleNfcIntent: $payloadData")
-                    toast("payload: $payloadData")
+                try {
+                    val records : List<Record> = Message(rawMessage[i] as NdefMessage)
+                    Log.i(TAG, "Message $i mit ${records.size} Records")
+
+                    for(k in 0 until records.size) {
+                        Log.i(TAG, "Record #$k ist eine ${records.get(k).javaClass.simpleName}")
+
+                        val record = records.get(k)
+                        if(record is TextRecord){
+                            val textRecord = record as TextRecord
+                            Log.i(TAG, "TextRecord is ${textRecord.text}")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Problem parsing message : ${e.localizedMessage}")
                 }
             }
         }
