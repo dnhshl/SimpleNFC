@@ -1,6 +1,8 @@
 package com.example.simplenfc
 
 import android.content.Intent
+import android.graphics.Color.rgb
+import android.net.Uri
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -64,9 +66,20 @@ class MainActivity : AppCompatActivity() {
                         if(record is TextRecord){
                             val textRecord = record as TextRecord
                             Log.i(TAG, "TextRecord is ${textRecord.text}")
+
+                            val string = textRecord.text
+                            val parts = string.split("-")
+                            val color = rgb(parts[1].toInt(), parts[2].toInt(), parts[3].toInt())
+                            window.decorView.setBackgroundColor(color)
+
                         }else if(record is UriRecord){
                             val uri = record as UriRecord
                             Log.i(TAG, "UriRecord is ${uri.uri}")
+
+                            val implicitIntent = Intent(Intent.ACTION_VIEW)
+                            implicitIntent.data = Uri.parse(uri.uri.toString())
+                            startActivity(implicitIntent)
+
                         }else if (record is AndroidApplicationRecord) {
                             val aar = record as AndroidApplicationRecord
                             Log.i(TAG, "Package is ${aar.packageName}")
